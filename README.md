@@ -7,6 +7,7 @@ You can then use these variables anywhere in your project using Global.{variable
 Set it once, use it everywhere in the game.
 
 You can save the game state variables using Global._save_game()
+
 You can load the game state variables using Global._load_game()
 
 
