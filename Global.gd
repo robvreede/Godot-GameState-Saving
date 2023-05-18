@@ -19,7 +19,6 @@ func _save_game():
 	#var file = FileAccess.open_encrypted_with_pass(savegame1, FileAccess.WRITE, "youverysecretkeytoencryptthesavefile")
 	var file = FileAccess.open(savegame1, FileAccess.WRITE)
 	if file.is_open():
-		#file.store_var(gamedata, true)
 		file.store_line(JSON.stringify(gamedata))
 		file.close()
 		print("Savegame saved")
@@ -31,7 +30,6 @@ func _load_game():
 	if FileAccess.file_exists(savegame1) and file.is_open():
 		gamedata = JSON.parse_string(file.get_as_text())
 		file.close()
-		#data = JSON.get_data()
 		print(gamedata)
 		print(gamedata.player_health)
 		print("Savegame loaded")
