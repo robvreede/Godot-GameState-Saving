@@ -1,55 +1,37 @@
 extends Node
 
+var savegame1 = "res://savegame1.dat"
+var version = "v2023-05-18  |  Work in progress"
 
-
-var version = "v2023-05-13  |  Work in progress"
-var current_level = 1
-var player_position_x = 33
-var player_position_y = 33
-var player_position_z = 33
-var player_rotation_x = 33
-var player_rotation_y = 33
-var player_rotation_z = 33
-var player_health = 100
-var data
-var savegamedata = JSON.new()
-var have_weapon = true
-
-func _save_game():
-	data = {
-		"current_level" : current_level,
-		"player_position.x" : player_position_x,
-		"player_position.y" : player_position_y,
-		"player_position.z" : player_position_z,
-		"player_rotation.x" : player_rotation_x,
-		"player_rotation.y" : player_rotation_y,
-		"player_rotation.z" : player_rotation_z,
-		"player_health" : player_health,
+var gamedata = {
+		"current_level" : 1,
+		"player_position_x" : 33,
+		"player_position_y" : 33,
+		"player_position_z" : 33,
+		"player_rotation_x" : 33,
+		"player_rotation_y" : 33,
+		"player_rotation_z" : 33,
+		"player_health" : 100,
 	}
 
-	var file = FileAccess.open_encrypted_with_pass("user://savegame.json", FileAccess.WRITE, "{youverysecretkeytoencryptthesavefile}")
+
+func _save_game():
+	#var file = FileAccess.open_encrypted_with_pass(savegame1, FileAccess.WRITE, "youverysecretkeytoencryptthesavefile")
+	var file = FileAccess.open(savegame1, FileAccess.WRITE)
 	if file.is_open():
-		savegamedata.parse(data)
-		file.store_var(savegamedata, true)
+		#file.store_var(gamedata, true)
+		file.store_line(JSON.stringify(gamedata))
 		file.close()
 		print("Savegame saved")
 
 
 func _load_game():
-	var file = FileAccess.open_encrypted_with_pass("user://savegame.json", FileAccess.READ, "youverysecretkeytoencryptthesavefile")
-	if file.is_open():
+	#var file = FileAccess.open_encrypted_with_pass(savegame1, FileAccess.READ, "youverysecretkeytoencryptthesavefile")
+	var file = FileAccess.open(savegame1, FileAccess.READ)
+	if FileAccess.file_exists(savegame1) and file.is_open():
+		gamedata = JSON.parse_string(file.get_as_text())
 		file.close()
-		data = savegamedata.get_data()
-		print(data)
-		
-		# Populate loaded data
-		current_level = data["current_level"]
-		player_position_x = data["player_position.x"]
-		player_position_y = data["player_position.y"]
-		player_position_z = data["player_position.z"]
-		player_rotation_x = data["player_rotation.x"]
-		player_rotation_y = data["player_rotation.y"]
-		player_rotation_z = data["player_rotation.z"]
-		player_health = data["player_health"]
-		
+		#data = JSON.get_data()
+		print(gamedata)
+		print(gamedata.player_health)
 		print("Savegame loaded")
